@@ -1,0 +1,6 @@
+{
+  "name": "Hướng Dẫn Dịch Vụ Công - Xã Dục Nông",
+  "description": "Cổng thông tin hướng dẫn dịch vụ công trực tuyến do Đoàn Thanh niên xã Dục Nông thực hiện nhằm hỗ trợ người dân.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -14,6 +14,7 @@ export interface ServiceDetail {
   fee: string; // Lệ phí
   category: string; // Phân nhóm để dễ tìm kiếm
   iconName: string; // Loại icon từ lucide
+  videoUrl?: string; // Link nhúng video YouTube hướng dẫn
 }
 
 export interface QuickTutorialSlide {

@@ -40,7 +40,8 @@ export const SERVICES_DATA: ServiceDetail[] = [
     duration: 'Trong vòng 1 ngày làm việc (ngay sau khi tiếp nhận hồ sơ đúng và đủ)',
     fee: 'Miễn phí hoàn toàn cho mọi công dân',
     category: 'Hộ tịch',
-    iconName: 'Baby'
+    iconName: 'Baby',
+    videoUrl: 'https://www.youtube.com/embed/F885rifEq7U'
   },
   {
     id: 'ket-hon',
@@ -81,7 +82,8 @@ export const SERVICES_DATA: ServiceDetail[] = [
     duration: 'Xử lý trong ngày làm việc (sau khi nộp đầy đủ hồ sơ trực tuyến và ký trực tiếp)',
     fee: 'Miễn phí hoàn toàn đối với công dân Việt Nam đăng ký trong nước',
     category: 'Hộ tịch',
-    iconName: 'Heart'
+    iconName: 'Heart',
+    videoUrl: 'https://www.youtube.com/embed/x_-gWKYVAwM'
   },
   {
     id: 'khai-tu',
@@ -122,7 +124,8 @@ export const SERVICES_DATA: ServiceDetail[] = [
     duration: 'Trong vòng 1 ngày làm việc (sau khi nhận đủ hồ sơ trực tuyến hợp lệ)',
     fee: 'Miễn phí hoàn toàn',
     category: 'Hộ tịch',
-    iconName: 'UserMinus'
+    iconName: 'UserMinus',
+    videoUrl: 'https://www.youtube.com/embed/SOlYf73kVVs'
   },
   {
     id: 'can-cuoc-duoi-14',
@@ -163,7 +166,8 @@ export const SERVICES_DATA: ServiceDetail[] = [
     duration: '7 ngày làm việc kể từ ngày hoàn tất nộp hồ sơ hoặc thu nhận sinh trắc học thành công',
     fee: 'Miễn phí hoàn toàn đối với trường hợp cấp thẻ căn cước lần đầu',
     category: 'Căn cước',
-    iconName: 'IdCard'
+    iconName: 'IdCard',
+    videoUrl: 'https://www.youtube.com/embed/xnByLESrV-Q'
   }
 ];
 

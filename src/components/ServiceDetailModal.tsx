@@ -214,8 +214,8 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service,
               <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-900 shadow-md border border-slate-200">
                 <iframe 
                   className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/Z0oYj7G_WdE" 
-                  title="Hướng dẫn sử dụng Cổng Dịch vụ công Quốc gia" 
+                  src={service.videoUrl || "https://www.youtube.com/embed/Z0oYj7G_WdE"} 
+                  title={`Hướng dẫn thực hiện ${service.name}`} 
                   frameBorder="0" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                   referrerPolicy="strict-origin-when-cross-origin"

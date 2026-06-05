@@ -70,8 +70,8 @@ export const ContactSupport: React.FC = () => {
               </div>
               <div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block">SỐ ĐIỆN THOẠI TRỰC BAN</span>
-                <a href="tel:0375509308" className="text-lg sm:text-xl font-black text-yellow-400 tracking-wider hover:underline font-mono">
-                  0375 509 308
+                <a href="tel:0394222080" className="text-lg sm:text-xl font-black text-yellow-400 tracking-wider hover:underline font-mono">
+                  0394 222 080 (PHI)
                 </a>
               </div>
             </div>

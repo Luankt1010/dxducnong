@@ -1,0 +1,26 @@
+{
+  "entities": {
+    "GlobalStats": {
+      "title": "Global Stats",
+      "description": "Global statistics for visitors and success guides",
+      "type": "object",
+      "properties": {
+        "visitors": {
+          "type": "integer",
+          "description": "Total number of unique page loads/visits"
+        },
+        "successGuides": {
+          "type": "integer",
+          "description": "Total number of successful guide markers"
+        }
+      },
+      "required": ["visitors", "successGuides"]
+    }
+  },
+  "firestore": {
+    "stats/{docId}": {
+      "schema": "GlobalStats",
+      "description": "Collection storing the global statistics document"
+    }
+  }
+}

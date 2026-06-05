@@ -34,7 +34,7 @@ export const Navbar: React.FC = () => {
           {/* Hotline badges */}
           <div className="flex-shrink-0 bg-blue-900/40 backdrop-blur-sm p-4 rounded-xl border border-blue-400/30 text-center md:text-right hidden sm:block">
             <p className="text-blue-200 text-xs font-semibold uppercase tracking-wider">ĐANG TRỰC HỖ TRỢ</p>
-            <p className="text-yellow-400 text-lg md:text-xl font-bold tracking-widest animate-bounce mt-1">0375 509 308</p>
+            <p className="text-yellow-400 text-lg md:text-xl font-bold tracking-widest animate-bounce mt-1">0394 222 080 (PHI)</p>
             <p className="text-white/80 text-[11px] mt-0.5">Mọi lúc, mọi nơi - Vì nhân dân phục vụ</p>
           </div>
           

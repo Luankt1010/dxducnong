@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    match /stats/{docId} {
+      allow read: if true;
+      allow create: if isValidId(docId) && docId == 'global'
+                    && request.resource.data.keys().hasAll(['visitors', 'successGuides'])
+                    && request.resource.data.keys().size() == 2
+                    && request.resource.data.visitors is int
+                    && request.resource.data.visitors >= 0
+                    && request.resource.data.successGuides is int
+                    && request.resource.data.successGuides >= 0;
+      allow update: if isValidId(docId) && docId == 'global'
+                    && request.resource.data.keys().hasAll(['visitors', 'successGuides'])
+                    && request.resource.data.keys().size() == 2
+                    && request.resource.data.visitors is int
+                    && request.resource.data.visitors >= 0
+                    && request.resource.data.successGuides is int
+                    && request.resource.data.successGuides >= 0
+                    && (
+                      (request.resource.data.visitors == resource.data.visitors + 1 && request.resource.data.successGuides == resource.data.successGuides) ||
+                      (request.resource.data.successGuides == resource.data.successGuides + 1 && request.resource.data.visitors == resource.data.visitors) ||
+                      (request.resource.data.successGuides == resource.data.successGuides - 1 && request.resource.data.visitors == resource.data.visitors && request.resource.data.successGuides >= 0)
+                    );
+    }
+  }
+}

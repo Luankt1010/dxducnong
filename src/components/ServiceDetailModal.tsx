@@ -244,7 +244,7 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({ service,
                   Cần Thanh niên Xã trợ giúp trực tiếp?
                 </h5>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Nếu bà con gặp vướng mắc về chụp hình giấy tờ hoặc nộp tiền lệ phí, hãy mang CCCD và điện thoại tới văn phòng Đoàn Thanh niên xã Dục Nông để đoàn viên thanh niên trực tiếp hỗ trợ giải quyết nhé. Hotline: <span className="font-bold text-[#0056B3] font-mono">0375 509 308</span>.
+                  Nếu bà con gặp vướng mắc về chụp hình giấy tờ hoặc nộp tiền lệ phí, hãy mang CCCD và điện thoại tới văn phòng Đoàn Thanh niên xã Dục Nông để đoàn viên thanh niên trực tiếp hỗ trợ giải quyết nhé. Hotline: <span className="font-bold text-[#0056B3] font-mono">0394 222 080 (PHI)</span>.
                 </p>
               </div>
             </div>

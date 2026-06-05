@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Users, CheckCircle2, LayoutGrid, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
+import { doc, getDoc, setDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore';
+import { db, handleFirestoreError, OperationType } from '../firebase';
 
 export const StatsSection: React.FC = () => {
   const [stats, setStats] = useState({
@@ -11,46 +13,65 @@ export const StatsSection: React.FC = () => {
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    // Read from localStorage to persist numbers and increment visitor starting strictly from 0
-    const storedVisitors = localStorage.getItem('ducnong_visitors_v4');
-    const storedGuides = localStorage.getItem('ducnong_guides_v4');
-    const userLiked = localStorage.getItem('ducnong_liked_v4') === 'true';
+    const statsRef = doc(db, 'stats', 'global');
 
-    let currentVisitors = 0;
-    let currentGuides = 0;
-
-    if (storedVisitors) {
-      currentVisitors = parseInt(storedVisitors, 10);
-    } else {
-      localStorage.setItem('ducnong_visitors_v4', currentVisitors.toString());
-    }
-
-    if (storedGuides) {
-      currentGuides = parseInt(storedGuides, 10);
-    } else {
-      localStorage.setItem('ducnong_guides_v4', currentGuides.toString());
-    }
-
-    // Increment visitors strictly once per page session to prevent double-counting of development re-renders
-    if (!sessionStorage.getItem('ducnong_session_counted_v4')) {
-      currentVisitors += 1;
-      localStorage.setItem('ducnong_visitors_v4', currentVisitors.toString());
-      sessionStorage.setItem('ducnong_session_counted_v4', 'true');
-    }
-
-    setStats({
-      visitors: currentVisitors,
-      successGuides: currentGuides,
-      servicesCount: 4,
+    // Real-time listener for global stats document
+    const unsubscribe = onSnapshot(statsRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setStats({
+          visitors: typeof data.visitors === 'number' ? data.visitors : 0,
+          successGuides: typeof data.successGuides === 'number' ? data.successGuides : 0,
+          servicesCount: 4,
+        });
+      } else {
+        // Initialize if document does not exist yet (can run safely from user who loads first)
+        setDoc(statsRef, { visitors: 1, successGuides: 0 }).catch((error) => {
+          handleFirestoreError(error, OperationType.WRITE, 'stats/global');
+        });
+      }
+    }, (error) => {
+      // Gracefully log onSnapshot query errors or block permission issues
+      console.error("Firestore onSnapshot error:", error);
     });
+
+    // Increment visitor count if not counted in this session
+    const incrementVisitor = async () => {
+      const hasCountedSession = sessionStorage.getItem('ducnong_session_counted_v5') === 'true';
+      if (!hasCountedSession) {
+        try {
+          const docSnap = await getDoc(statsRef);
+          if (docSnap.exists()) {
+            await updateDoc(statsRef, { visitors: increment(1) });
+          } else {
+            await setDoc(statsRef, { visitors: 1, successGuides: 0 });
+          }
+          sessionStorage.setItem('ducnong_session_counted_v5', 'true');
+        } catch (error) {
+          handleFirestoreError(error, OperationType.WRITE, 'stats/global');
+        }
+      }
+    };
+
+    incrementVisitor();
+
+    // Read liked state from local storage to keep user's active UI like state
+    const userLiked = localStorage.getItem('ducnong_liked_v5') === 'true';
     setHasLiked(userLiked);
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
-  const handleIncrementSuccess = () => {
-    const newGuides = stats.successGuides + 1;
-    localStorage.setItem('ducnong_guides_v4', newGuides.toString());
-    setStats((prev) => ({ ...prev, successGuides: newGuides }));
-    
+  const handleIncrementSuccess = async () => {
+    const statsRef = doc(db, 'stats', 'global');
+    try {
+      await updateDoc(statsRef, { successGuides: increment(1) });
+    } catch (error) {
+      handleFirestoreError(error, OperationType.UPDATE, 'stats/global');
+    }
+
     // Trigger small animation feedback
     const btn = document.getElementById('success-increment-btn');
     if (btn) {
@@ -61,18 +82,26 @@ export const StatsSection: React.FC = () => {
     }
   };
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    const statsRef = doc(db, 'stats', 'global');
     if (!hasLiked) {
-      localStorage.setItem('ducnong_liked_v4', 'true');
+      localStorage.setItem('ducnong_liked_v5', 'true');
       setHasLiked(true);
-      // Increment successful guide to reflect engagement
-      handleIncrementSuccess();
+
+      try {
+        await updateDoc(statsRef, { successGuides: increment(1) });
+      } catch (error) {
+        handleFirestoreError(error, OperationType.UPDATE, 'stats/global');
+      }
     } else {
-      localStorage.setItem('ducnong_liked_v4', 'false');
+      localStorage.setItem('ducnong_liked_v5', 'false');
       setHasLiked(false);
-      const newGuides = Math.max(0, stats.successGuides - 1);
-      localStorage.setItem('ducnong_guides_v4', newGuides.toString());
-      setStats((prev) => ({ ...prev, successGuides: newGuides }));
+
+      try {
+        await updateDoc(statsRef, { successGuides: increment(-1) });
+      } catch (error) {
+        handleFirestoreError(error, OperationType.UPDATE, 'stats/global');
+      }
     }
   };
 
